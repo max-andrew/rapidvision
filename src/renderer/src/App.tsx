@@ -21,10 +21,31 @@ function App(): JSX.Element {
       setIsSettingFunction(true)
       return false
     } else {
+      setIsSettingFunction(false)
       setHasFunctions([number, ...hasFunctions])
       return true
     }
   }
+
+  useEffect(() => {
+    const handleTouchStart = (event) => {
+      let touch = event.touches[0]
+      let simulatedEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      })
+      event.target.dispatchEvent(simulatedEvent)
+    }
+
+    document.addEventListener('touchstart', handleTouchStart, false)
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart, false)
+    }
+  }, [])
 
   function ToolBar(props) {
     return (
