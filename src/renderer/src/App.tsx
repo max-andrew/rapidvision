@@ -3,6 +3,7 @@ import { useState } from "react"
 
 function App(): JSX.Element {
   const [currentStyle, setCurrentStyle] = useState("A")
+  const [showSettings, setShowSettings] = useState(false)
   const [dPopUp, setDPopUp] = useState("")
 
   function ToolBar(props) {
@@ -54,7 +55,12 @@ function App(): JSX.Element {
             </div>
           </div>
 
-          <button className="text-lg bg-black text-white w-full border-2 border-black my-2 py-2">SETTINGS</button>
+          <button
+            className="text-lg bg-black text-white w-full border-2 border-black my-2 py-2"
+            onClick={() => setShowSettings(!showSettings)}
+            >
+            SETTINGS
+          </button>
 
           <div className="w-full flex justify-between items-center">
             <div className="h-full bg-blue-700 text-white w-2/3 flex items-center justify-center border-2 border-black">Info Area</div>
@@ -70,22 +76,24 @@ function App(): JSX.Element {
       <>
         <div className="w-full h-full bg-orange-100 border-2 border-black flex flex-col">
           <h2 className="text-orange-700 self-start m-1 text-lg">View Image Mode A</h2>
-          <div className="flex-grow flex items-center">
-            <div className="h-5/6 w-2/12 bg-gray-400 text-white flex flex-col justify-center space-y-2 border-2 border-black pl-2 mb-1">
-              <p>Job Setup</p>
-              <p>Load Job</p>
-              <p
-                className="cursor-pointer"
-                onClick={() => {
-                setCurrentStyle("D")
-                setDPopUp("setModes")
-              }}>Set Mode(s)</p>
-              <p>Take Master</p>
-              <p>Configuration</p>
-              <p>Diagnostics</p>
-              <p>Remote Service</p>
+          { showSettings && (
+            <div className="flex-grow flex items-center">
+              <div className="h-5/6 w-2/12 bg-gray-400 text-white flex flex-col justify-center space-y-2 border-2 border-black pl-2 mb-1">
+                <p>Job Setup</p>
+                <p>Load Job</p>
+                <p
+                  className="cursor-pointer"
+                  onClick={() => {
+                  setCurrentStyle("D")
+                  setDPopUp("setModes")
+                }}>Set Mode(s)</p>
+                <p>Take Master</p>
+                <p>Configuration</p>
+                <p>Diagnostics</p>
+                <p>Remote Service</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </>
     )
