@@ -1,7 +1,9 @@
+import { abort } from "process"
 import { useState } from "react"
 
 function App(): JSX.Element {
   const [currentStyle, setCurrentStyle] = useState("A")
+  const [dPopUp, setDPopUp] = useState("")
 
   function ToolBar(props) {
     return (
@@ -13,7 +15,11 @@ function App(): JSX.Element {
             <button onClick={() => setCurrentStyle("A")} className="w-full bg-orange-700 text-white border-2 border-black py-2">Style A</button>
             <button onClick={() => setCurrentStyle("B")} className="w-full bg-blue-700 text-white border-2 border-black py-2">Style B</button>
             <button onClick={() => setCurrentStyle("C")} className="w-full bg-green-800 text-white border-2 border-black py-2">Style C</button>
-            <button onClick={() => setCurrentStyle("D")} className="w-full bg-purple-800 text-white border-2 border-black py-2">Style D</button>
+            <button onClick={() => {
+              setCurrentStyle("D")
+              setDPopUp("")
+            }}
+              className="w-full bg-purple-800 text-white border-2 border-black py-2">Style D</button>
           </div>
 
           <div className="w-full flex flex-col items-center space-y-2">
@@ -65,10 +71,19 @@ function App(): JSX.Element {
         <div className="w-full h-full bg-orange-100 border-2 border-black flex flex-col">
           <h2 className="text-orange-700 self-start m-1 text-lg">View Image Mode A</h2>
           <div className="flex-grow flex items-center">
-            <div className="h-5/6 w-28 bg-gray-400 text-white flex flex-col items-center justify-center border-2 border-black mb-1 text-lg">
-              <p>SETTINGS</p>
-              <p>MENU</p>
-              <p>ITEMS</p>
+            <div className="h-5/6 w-2/12 bg-gray-400 text-white flex flex-col justify-center space-y-2 border-2 border-black pl-2 mb-1">
+              <p>Job Setup</p>
+              <p>Load Job</p>
+              <p
+                className="cursor-pointer"
+                onClick={() => {
+                setCurrentStyle("D")
+                setDPopUp("setModes")
+              }}>Set Mode(s)</p>
+              <p>Take Master</p>
+              <p>Configuration</p>
+              <p>Diagnostics</p>
+              <p>Remote Service</p>
             </div>
           </div>
         </div>
@@ -78,14 +93,22 @@ function App(): JSX.Element {
 
   function StyleD(props) {
     return (
-      <>
-        <div className="flex w-2/5 h-2/5 bg-purple-300 border-2 border-black">
+      <div className="grid grid-cols-5 h-full">
+        <div className="col-span-2  bg-purple-300 border-2 border-black">
           <h2 className="text-purple-900">View Repeat Style D</h2>
         </div>
-        <div className="flex w-3/5 h-3/5 bg-purple-300 border-2 border-black place-self-end">
+        <div className="col-span-3" />
+        { dPopUp ? (
+          <div className="col-span-2 bg-gray-400 flex justify-center items-center border-2 border-black m-1">
+            <h2 className="text-white">Set Modes Pop-out area</h2>
+          </div>
+          ) : (
+            <div className="col-span-2" />
+        )}
+        <div className="col-span-3 bg-purple-300 border-2 border-black">
           <h2 className="text-purple-900">View Image Style D</h2>
         </div>
-      </>
+      </div>
     )
   }
 
