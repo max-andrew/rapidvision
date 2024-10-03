@@ -4,6 +4,7 @@ function App(): JSX.Element {
   const [currentStyle, setCurrentStyle] = useState<string>("A")
   const [showSettings, setShowSettings] = useState<boolean>(false)
   const [dPopUp, setDPopUp] = useState<boolean>(false)
+  const [showDSetModeSequence, setShowDSetMoreSequence] = useState<boolean>(false)
   const [isSettingFunction, setIsSettingFunction] = useState<boolean>(false)
   const [hasFunctions, setHasFunctions] = useState<number[]>([])
 
@@ -104,12 +105,18 @@ function App(): JSX.Element {
                   className="cursor-pointer"
                   onClick={() => {
                   setCurrentStyle("D")
-                  setDPopUp("setModes")
+                  setDPopUp(true)
                 }}>Set Mode(s)</p>
                 <p>Take Master</p>
                 <p>Configuration</p>
                 <p>Diagnostics</p>
                 <p>Remote Service</p>
+                <p
+                  className="cursor-pointer"
+                  onClick={() => {
+                  setCurrentStyle("D")
+                  setShowDSetMoreSequence(true)
+                }}>Mode Sequence</p>
               </div>
             </div>
           )}
@@ -129,17 +136,38 @@ function App(): JSX.Element {
       )
     }
 
+    function DSetModeSequence(props) {
+      return (
+        <div className="col-span-2 bg-gray-200 flex flex-col justify-center items-center">
+          <h2 className="w-3/6 text-gray-700 text-center mb-2">How many sequence points would you like?</h2>
+          <input className="w-1/6" type="number" />
+
+          <br />
+          <br />
+
+          <h2 className="w-4/6 text-gray-700 text-center mb-2">Would you like to control the sequence or have the system pick the most efficient path?</h2>
+          <div>
+            <input type="radio" id="option1" name="options" value="option1" className="mx-1" />
+            <label for="option1" className="text-gray-700">Control</label>
+            <div className="mx-2" />
+            <input type="radio" id="option2" name="options" value="option2" className="mx-1" />
+            <label for="option2" className="text-gray-700">System Pick</label>
+          </div>
+
+          <button onClick={() => setShowDSetMoreSequence(false)} className="text-gray-400 mt-5">Cancel</button>
+        </div>
+      )
+    }
+
     return (
       <div className="grid grid-cols-5 h-full">
         <div className="col-span-2  bg-purple-300 border-2 border-black">
           <h2 className="text-purple-900">View Repeat Style D</h2>
         </div>
         <div className="col-span-3" />
-        { dPopUp ? (
-          <DPopUp />
-          ) : (
-          <div className="col-span-2" />
-        )}
+        { dPopUp && <DPopUp /> }
+        { showDSetModeSequence && <DSetModeSequence /> }
+        { (!dPopUp && !showDSetModeSequence) && <div className="col-span-2" />}
         <div className="col-span-3 bg-purple-300 border-2 border-black">
           <h2 className="text-purple-900">View Image Style D</h2>
         </div>
