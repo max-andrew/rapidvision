@@ -1,4 +1,8 @@
+import { useState } from "react"
+
 function App(): JSX.Element {
+  const [currentStyle, setCurrentStyle] = useState("A")
+
   function ToolBar(props) {
     return (
       <>
@@ -6,10 +10,10 @@ function App(): JSX.Element {
 
           <div className="w-full space-y-2">
             <div className="w-full h-14 bg-gray-400 text-white flex items-center justify-center border-2 border-black mb-1">Logo</div>
-            <button className="w-full bg-orange-700 text-white border-2 border-black py-2">Style A</button>
-            <button className="w-full bg-blue-700 text-white border-2 border-black py-2">Style B</button>
-            <button className="w-full bg-green-800 text-white border-2 border-black py-2">Style C</button>
-            <button className="w-full bg-purple-800 text-white border-2 border-black py-2">Style D</button>
+            <button onClick={() => setCurrentStyle("A")} className="w-full bg-orange-700 text-white border-2 border-black py-2">Style A</button>
+            <button onClick={() => setCurrentStyle("B")} className="w-full bg-blue-700 text-white border-2 border-black py-2">Style B</button>
+            <button onClick={() => setCurrentStyle("C")} className="w-full bg-green-800 text-white border-2 border-black py-2">Style C</button>
+            <button onClick={() => setCurrentStyle("D")} className="w-full bg-purple-800 text-white border-2 border-black py-2">Style D</button>
           </div>
 
           <div className="w-full flex flex-col items-center space-y-2">
@@ -47,9 +51,39 @@ function App(): JSX.Element {
           <button className="text-lg bg-black text-white w-full border-2 border-black my-2 py-2">SETTINGS</button>
 
           <div className="w-full flex justify-between items-center">
-            <div className="h-full bg-blue-600 text-white w-2/3 flex items-center justify-center border-2 border-black">Info Area</div>
-            <button className="bg-blue-600 text-white w-12 h-12 rounded-full border-2 border-black mx-1">i</button>
+            <div className="h-full bg-blue-700 text-white w-2/3 flex items-center justify-center border-2 border-black">Info Area</div>
+            <button className="bg-blue-700 text-white w-12 h-12 rounded-full border-2 border-black mx-1">i</button>
           </div>
+        </div>
+      </>
+    )
+  }
+
+  function StyleA(props) {
+    return (
+      <>
+        <div className="w-full h-full bg-orange-100 border-2 border-black flex flex-col">
+          <h2 className="text-orange-700 self-start m-1 text-lg">View Image Mode A</h2>
+          <div className="flex-grow flex items-center">
+            <div className="h-5/6 w-28 bg-gray-400 text-white flex flex-col items-center justify-center border-2 border-black mb-1 text-lg">
+              <p>SETTINGS</p>
+              <p>MENU</p>
+              <p>ITEMS</p>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  function StyleD(props) {
+    return (
+      <>
+        <div className="flex w-2/5 h-2/5 bg-purple-300 border-2 border-black">
+          <h2 className="text-purple-900">View Repeat Style D</h2>
+        </div>
+        <div className="flex w-3/5 h-3/5 bg-purple-300 border-2 border-black place-self-end">
+          <h2 className="text-purple-900">View Image Style D</h2>
         </div>
       </>
     )
@@ -61,12 +95,15 @@ function App(): JSX.Element {
         <ToolBar />
 
         <div className="flex w-screen flex-col p-1">
-          <div className="flex w-2/5 h-2/5 bg-purple-300 border-2 border-black">
-            <h2 className="text-purple-900">View Repeat Style D</h2>
-          </div>
-          <div className="flex w-3/5 h-3/5 bg-purple-300 border-2 border-black place-self-end">
-            <h2 className="text-purple-900">View Image Style D</h2>
-          </div>
+          { (currentStyle === "A") &&
+            <StyleA />
+          }
+          { (currentStyle === "D") &&
+            <StyleD />
+          }
+          { (currentStyle !== "A" && currentStyle !== "D") &&
+            <p>Error loading style</p>
+          }
         </div>
       </div>
     </>
