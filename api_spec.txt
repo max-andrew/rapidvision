@@ -1,0 +1,242 @@
+Define draft API calls to the backend for rendering any elements needed for the “Style D” screen
+
+
+MODE SELECTION
+
+GET /api/modes
+
+Retrieve the list of available modes for the user to select from (e.g., fixed, sequence).
+
+{
+  "modes": [
+    { "id": 1, "name": "Fixed" },
+    { "id": 2, "name": "Sequence" }
+  ]
+}
+
+
+
+GET /api/modes/:id
+
+Get details of the selected mode. Check if the mode has already been set (to ask if it should be overwritten).
+
+{
+  "mode": {
+    "id": 1,
+    "name": "Fixed",
+    "is_set": true,
+    "settings": { ... }
+  }
+}
+
+
+
+
+MODE OPTIONS
+
+POST /api/modes/fixed
+
+Submit the user-defined settings for the fixed mode, including position, zoom, and brightness.
+
+Request:
+{
+  "mode_type": "fixed",
+  "view_position": { "x": 100, "y": 150, "zoom": 2 },
+  "brightness": 75
+}
+
+Response:
+{
+  "success": true,
+  "mode_id": 1,
+  "message": "Fixed mode saved successfully."
+}
+
+
+
+POST /api/modes/sequence
+
+Submit the settings for sequence mode, including the number of sequence points, dwell times, and sequence path control.
+
+Request:
+{
+  "mode_type": "sequence",
+  "sequence_points": [
+    { "point_id": 1, "coordinates": { "x": 100, "y": 150, "zoom": 2 }, "dwell_time": 2000 },
+    { "point_id": 2, "coordinates": { "x": 200, "y": 250, "zoom": 1.5 }, "dwell_time": 3000 }
+  ],
+  "optimize_path": true
+}
+
+Response:
+{
+  "success": true,
+  "mode_id": 2,
+  "message": "Sequence mode saved successfully."
+}
+
+
+
+
+MODIFY SEQUENCE POINT
+
+PUT /api/modes/sequence/:sequence_id/points/:point_id
+
+Modify an existing sequence point with new coordinates or dwell time.
+
+Request:
+{
+  "coordinates": { "x": 150, "y": 180, "zoom": 2.5 },
+  "dwell_time": 2500
+}
+
+Response:
+{
+  "success": true,
+  "message": "Sequence point updated successfully."
+}
+
+
+
+
+DELETE SEQUENCE POINTS
+
+DELETE /api/modes/sequence/:sequence_id/points
+
+Remove sequence points that exceed the new user-defined number.
+
+Request:
+{
+  "remove_points": [4, 5, 6]
+}
+
+Response:
+{
+  "success": true,
+  "message": "Sequence points removed."
+}
+
+
+
+
+SET SEQUENCE
+
+POST /api/modes/sequence/finalize
+
+Finalize the setup of the sequence mode, ensuring all points are set and validated.
+
+Request:
+{
+  "sequence_id": 2
+}
+
+Response:
+{
+  "success": true,
+  "message": "Sequence mode set successfully."
+}
+
+
+
+
+
+
+
+
+Define draft API calls to the backend for what should happen when, in “manual mode,” the user
+presses:
+
+
+Each of the arrow key buttons (assume that position is tracked in %)
+
+
+POST /api/camera/move
+
+Sends the direction and percentage movement to the backend to control the camera.
+
+Request:
+{
+  "direction": "up", // or "down", "left", "right"
+  "position_percent": 5 // Percentage to move in the direction
+}
+
+Response:
+{
+  "success": true,
+  "new_position": { "x": 50, "y": 45 }
+}
+
+
+
+
+Dim/Bright Buttons (Adjust Brightness)
+
+
+POST /api/camera/brightness
+
+Adjusts the camera’s brightness level in manual mode.
+
+Request:
+{
+  "brightness_level": 80 // Range can be 0 to 100
+}
+
+Response:
+{
+  "success": true,
+  "current_brightness": 80
+}
+
+
+POST /api/camera/brightness/reset
+
+Resets the brightness to the default gain when leaving manual mode.
+
+Response:
+{
+  "success": true,
+  "default_brightness": 60
+}
+
+
+
+
+Zoom Buttons (Adjust Zoom Level)
+
+
+POST /api/camera/zoom
+
+Adjusts the camera’s zoom level.
+
+Request:
+{
+  "zoom_level": 2.5 // The zoom level, where 1 is default and > 1 zooms in
+}
+
+Response:
+
+{
+  "success": true,
+  "current_zoom_level": 2.5
+}
+
+
+
+
+Information Button (Selects Another Element for Information)
+
+
+GET /api/camera/info/:element_id
+
+Fetches the information or metadata for the selected element.
+
+{
+  "success": true,
+  "element_id": 123,
+  "element_data": {
+    "name": "Sequence Point 1",
+    "position": { "x": 100, "y": 200 },
+    "zoom": 2.0,
+    "brightness": 75
+  }
+}
